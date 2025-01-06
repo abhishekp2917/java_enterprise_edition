@@ -4,11 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Page</title>
-    <link rel="stylesheet" href="static/css/index.css">
+    <link rel="stylesheet" href="../../static/css/index.css">
 </head>
 <body>
     <div class="login-container">
         <h1>Login</h1>
+        <c:if test="${not empty failedLoginMessage}">
+            <div class="error-message">${failedLoginMessage}</div>
+        </c:if>
         <form action="login" method="POST">
             <div class="form-group">
                 <label for="username">Username</label>

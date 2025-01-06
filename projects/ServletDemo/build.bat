@@ -32,7 +32,7 @@ xcopy /e /i %LIB_DIR%\* %WAR_DIR%\WEB-INF\lib
 :: Package into WAR
 echo Packaging into WAR...
 cd %WAR_DIR%
-jar cvf ..\%BUILD_FILE_NAME%.war -C . .
+jar cvf ..\ROOT.war -C . .
 
 :: Output location of the WAR file
 echo Build successful. WAR created.

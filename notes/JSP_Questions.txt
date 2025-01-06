@@ -1,0 +1,165 @@
+*   What are various components of JSP (JavaServer Pages) ?
+
+>>  (1)  Directives:
+
+        - Directives provide global settings for the entire JSP page. 
+        
+        - They are used to define settings such as the page encoding, the language used, and whether scripting elements 
+          are allowed.
+        
+            Example:
+
+                ```
+                    <%@ page language="java" contentType="text/html; charset=ISO-8859-1" %>
+                ```
+
+        - Even to import various packages in JSP, one can use Directives using import attribute. This would be similar to import 
+          statement in normal java class.
+
+            Example:
+
+                ```
+                    <%@ page import="java.time.LocalDateTime" %>
+                    <%@ page import="java.time.format.DateTimeFormatter" %>
+                ```
+        
+    (2) Declarations:
+
+        - Declarations are used to declare variables or methods that can be used throughout the JSP page. The variables and methods declared here are part of the page’s overall functionality.
+
+        Example: 
+        
+            ```
+                <%! int counter = 0; %>
+            ```
+
+    (3) Scriptlets:
+
+        - Scriptlets are Java code that maps to the Service() method when JSP translates into servlet.
+        
+        - These blocks of code are executed whenever the JSP page is requested.
+        
+        Example: 
+        
+            ```
+                <% out.println("Hello, world!"); %>
+            ```
+    
+    (4) Expressions:
+
+        - Expressions are used to output data directly to the response stream. 
+            
+        Example: 
+        
+            ```
+                <%= 2 + 2 %> outputs 4.
+            ```
+
+    (5) Standard Tag Library (JSTL):
+
+        - JSTL is a set of tags that provide functionality for common tasks such as iteration, conditionals, formatting, 
+          and internationalization. 
+          
+        - It helps avoid the use of scriptlets and improves the readability of the JSP.
+        
+        Example: 
+        
+            ```
+                <c:if test="${someCondition}">Some content</c:if>
+            ```
+
+Custom Tags:
+
+Custom tags allow developers to define their own tags for use in JSP pages, usually through a tag library. These can encapsulate complex behavior and provide a higher level of abstraction.
+They are typically used with tag libraries like the JavaServer Pages Standard Tag Library (JSTL).
+Action Tags:
+
+Action tags are used to invoke JavaBeans, include other JSP pages, or forward requests to another resource.
+Common actions include:
+<jsp:useBean>: Instantiates and initializes a JavaBean.
+<jsp:include>: Includes content from another resource.
+<jsp:forward>: Forwards the request to another resource.
+JavaBeans:
+
+JavaBeans are reusable components used to encapsulate data and provide getter and setter methods. These can be accessed directly within JSP using <jsp:useBean> and other actions.
+Error Handling:
+
+JSP supports error handling using the errorPage attribute in the page directive to redirect to an error page when an exception occurs.
+Example: <%@ page errorPage="error.jsp" %>
+These components help to separate the logic (Java code) from the presentation (HTML) and create more manageable and maintainable web pages.
+
+________________________________________________________________________________________________________________________
+
+*   What are various java packages that are imported by-default by JSP ?
+
+>>  The default imports in JSP include:
+
+
+        (1) java.lang.*;        
+        
+        (2) javax.servlet.*;     
+        
+        (3) javax.servlet.http.*; 
+        
+        (4) javax.servlet.jsp.*; 
+        
+        (5) java.util.*; 
+
+________________________________________________________________________________________________________________________
+
+*   What are various predeclared object/variable available to use in JSP ?
+
+>>  (1) javax.servlet.http.HttpServletRequest:
+            
+        - Variable name: 'request' 
+        - Represents the HTTP request sent by the client.
+        - Provides methods to retrieve parameters, headers, attributes, and more.
+
+    (2) javax.servlet.http.HttpServletResponse: 
+            
+        - Variable name: 'response' 
+        - Represents the HTTP response sent back to the client.
+        - Allows setting headers, cookies, content type, and more.
+
+    (3) javax.servlet.jsp.JspWriter: 
+
+        - Variable name: 'out' 
+        - Used to send output to the client (typically HTML content).
+        - Automatically flushed at the end of the page.
+        
+    (4) javax.servlet.http.HttpSession: 
+
+        - Variable name: 'session' 
+        - Represents the current user session.
+        - Used to store user-specific data across multiple requests.
+        
+    (5) javax.servlet.ServletContext: 
+
+        - Variable name: application
+        - Represents the servlet context, shared by all components in the web application.
+        - Useful for application-wide configuration or shared data.
+        
+    (6) javax.servlet.ServletConfig:
+
+        - Variable name: config
+        - Represents the servlet configuration object for the JSP page.
+        - Useful for accessing initialization parameters specific to the JSP or servlet.
+        
+    (7) javax.servlet.jsp.PageContext:
+
+        - Variable name: pageContext 
+        - Provides access to all the other implicit objects and page-scoped attributes.
+        - Acts as a convenience object to access request, session, application, and response data.
+    
+    (8) java.lang.Object: page
+
+        - Variable name: page  
+        - Refers to the current instance of the JSP page (similar to 'this' keyword in a Java class).
+        
+    (9) java.lang.Throwable: exception
+
+        - Variable name: exception  
+        - Available only in error pages (when isErrorPage="true" is set in the JSP).
+        - Represents the exception that caused the error.
+
+________________________________________________________________________________________________________________________

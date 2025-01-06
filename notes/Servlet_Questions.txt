@@ -1,0 +1,138 @@
+*   What is the difference between Java Standard Edition (Java SE) and Java Enterprise Edition (Java EE) ?
+
+>>  (1) Java Standard Edition (JSE):
+
+        - JSE (also referred to as Java SE) is the core platform for developing and running general-purpose applications.
+        
+        - It provides the foundation of the Java language and core libraries.
+        
+        - Focuses on standalone applications and small-scale client-server solutions.
+
+        Key Features:
+            
+            (a) Core Libraries:
+                
+                - Includes foundational libraries like java.lang, java.util, java.io, and java.math.
+            
+            (b) Desktop Applications:
+                
+                - Supports building desktop GUI applications using Swing, AWT, or JavaFX.
+            
+            (c) Networking:
+                
+                - Provides networking APIs for sockets, URLs, and HTTP.
+
+    (2) Java Enterprise Edition (JEE)
+
+        - JEE (now known as Jakarta EE) builds on top of JSE and is specifically designed for large-scale, distributed, 
+          and multi-tiered enterprise applications.
+
+        - It provides additional APIs and tools for web-based, server-side, and enterprise-level development.
+            
+        Key Features:
+        
+            (a) Web Development:
+                
+                - Includes Servlets, JSP, and WebSocket APIs for building web apps.
+            
+            (b) Enterprise Components:
+                
+                - Includes Enterprise JavaBeans (EJB) and JPA (Java Persistence API).
+            
+            (3) Messaging:
+                
+                - Provides JMS (Java Message Service) for messaging solutions.
+            
+            (4) Web Services:
+                
+                - Supports SOAP and RESTful services with JAX-WS and JAX-RS.
+        
+    - Use Java SE if you are developing standalone lightweight applications, utilities, or desktop solutions.
+    
+    - Use Java EE if you are building scalable, web-based, or enterprise-level applications that require robust frameworks 
+      and APIs for deployment.    
+
+________________________________________________________________________________________________________________________
+
+*   What are various folders under WAR root package that is inaccessible directly through URL ?
+
+>>  (1) WEB-INF Directory:
+
+        - Contains configuration files (web.xml), server-side resources (e.g., JSPs, servlets), and libraries (lib folder with JARs).
+        
+        - Files inside WEB-INF are protected by-default and cannot be accessed directly through a URL.
+        
+        - This ensure security by restricting access to server-side resources.
+        
+        Example:
+
+            - A URL like this http://example.com/WEB-INF/views/Home.jsp which is trying to access content of WEB-INF folder 
+              would get 404 (Not Found) response.
+            
+            - You must forward requests programmatically via a servlet or filter:
+
+                ```
+                    RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/Home.jsp");
+                    dispatcher.forward(request, response);
+                ```
+
+    (2) META-INF Directory:
+
+        - Stores metadata information about the application (e.g., MANIFEST.MF in JARs or WARs).
+        
+        - Like WEB-INF, its contents are also not accessible via direct URL requests.
+
+    (3) Custom Configuration:
+
+        - You can configure additional folders to be inaccessible by defining a web.xml or server-specific configuration.
+
+        Example:
+
+            - To restrict access to a custom folder like /private/ undeer root directory, you can configure it in web.xml 
+              as below.
+                    
+                ```    
+                    <security-constraint>
+                        <web-resource-collection>
+                            <web-resource-name>Private Resources</web-resource-name>
+                            <url-pattern>/static/*</url-pattern>
+                        </web-resource-collection>
+                        <auth-constraint />
+                    </security-constraint>
+                ```
+
+            - A URL like this http://example.com/private/Home.jsp which is trying to access content of WEB-INF folder 
+              would get 403 (Forbidden) response.
+
+    Note:
+
+        - Public files like css, js, images etc should be kept inside WEB-INF, META-INF or any restricted directory else 
+          browser wouldn't be able to fetch them.  
+
+________________________________________________________________________________________________________________________
+
+*   From which Servlet version the annotations are available ?
+
+>>  Annotations for servlets, filters, and listeners were introduced in Servlet 3.0, which is part of the Java EE 6 platform.
+
+    If you're using a container based on an older version of the Servlet API (e.g., 2.5), you'll need to declare listeners, 
+    filters, and servlets in the web.xml file instead.
+
+    Key Annotations Introduced in Servlet 3.0:
+
+        (1) @WebServlet: For declaring servlets.
+
+        (2) @WebFilter: For declaring filters.
+
+        (3) @WebListener: For declaring listeners.
+
+        (4) @MultipartConfig: For handling file uploads in servlets.
+
+    Advantages:
+
+        - Simplifies configuration by eliminating the need to declare these components in the web.xml file.
+        
+        - Makes code more readable and self-contained, as metadata about the servlet, filter, or listener is located 
+          directly within the class.
+
+________________________________________________________________________________________________________________________

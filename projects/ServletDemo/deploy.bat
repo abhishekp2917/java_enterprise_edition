@@ -8,19 +8,15 @@ set WAR_FILE=C:\java_enterprise_edition\projects\ServletDemo\target\%WAR_FILE_NA
 set TARGET_DIR=%TOMCAT_HOME%\webapps
 
 
-::deploy_war
+:: deploying WAR
 echo Deploying %WAR_FILE% to %TARGET_DIR%...
 
-:: Check if Tomcat is running by checking the process
-tasklist /FI "IMAGENAME eq tomcat8.exe" 2>NUL | find /I "tomcat8.exe" > NUL
-if %ERRORLEVEL%==0 (
-    echo Tomcat is running, stopping Tomcat...
-    call %TOMCAT_HOME%\bin\shutdown.bat
-    :: REM Wait for Tomcat to stop completely
-    timeout /t 10 > nul
-) else (
-    echo Tomcat is not running, skipping stop.
-)
+:: Stopping tomcat
+echo Tomcat is running, stopping Tomcat...
+call %TOMCAT_HOME%\bin\shutdown.bat
+
+:: REM Wait for Tomcat to stop completely
+timeout /t 10 > nul
 
 :: REM Remove old deployment
 echo Removing old deployment %TARGET_DIR%\%WAR_FILE_NAME%...

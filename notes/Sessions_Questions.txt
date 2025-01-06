@@ -1,0 +1,52 @@
+*   Why accessing HttpSession object can only be possible through HttpServletRequest and not normal ServletRequest ?
+
+>>  Session management is an HTTP-specific feature, and HttpSession is an abstraction for managing user sessions in an 
+    HTTP context. 
+
+    On the other hand, ServletResponse is a generic interface designed for all types of servlets, including HTTP, FTP, 
+    or other protocols.
+
+________________________________________________________________________________________________________________________
+
+*   When asking for HttpSession object, how does servlet container identifies which HttpSession object to return since 
+    there could be multiple user's session in sytem memory ?
+
+>>  The servlet container uses a session identifier (session ID) to associate a specific session object with the user's 
+    request. 
+    
+    This session ID is unique for each session and works as follows:
+
+    How it works:
+
+        (1) Session ID Generation:
+
+            - When a new session is created (request.getSession()), the server generates a unique session ID.
+            
+            - The session ID is stored on the server side along with the session object in memory or persistent storage.
+        
+        (2) Session ID Storage on Client-Side:
+
+            - The session ID is sent to the client in one of the following ways:
+                
+                (a) Cookies:
+                 
+                    - The most common method. The servlet container sets a cookie named JSESSIONID with the session ID.
+        
+                (b) URL Rewriting: 
+                
+                    - If cookies are disabled in the client browser, the session ID is appended to the URL as a query 
+                      parameter (e.g., http://example.com/home;jsessionid=123456789).
+        
+        (3) Session ID Retrieval:
+
+            - For subsequent requests, the client includes the session ID With cookies (browser automatically sends 
+              JSESSIONID to the server) or With URL rewriting (client passes the session ID in the query parameter).
+        
+        (4) Session Lookup:
+
+            - The servlet container retrieves the session ID from the incoming request (either from the cookie or URL).
+        
+            - Using the session ID, the container looks up the corresponding HttpSession object stored in memory or a 
+              session store.
+
+________________________________________________________________________________________________________________________
