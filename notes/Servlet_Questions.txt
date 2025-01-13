@@ -54,6 +54,239 @@
 
 ________________________________________________________________________________________________________________________
 
+*   Explain the complete lifecycle of a Servlet ?
+
+>>  The Servlet lifecycle is the sequence of steps a servlet goes through during its existence, managed by the 
+    Servlet Container (e.g., Apache Tomcat, Jetty). 
+        
+    The Servlet container controls the lifecycle, ensuring the servlet operates correctly within a web application.
+
+    The servlet container creates only one instance of a servlet class (singleton pattern) where multiple threads process 
+    requests on the same instance.
+
+    Key Phases of the Servlet Lifecycle:
+
+        (1) Loading and Instantiation:
+
+            - The Servlet container loads the servlet class into memory when:
+                
+                (a) The web application starts i.e if the servlet is configured to load at startup using the 
+                    <load-on-startup> element in web.xml.
+
+                (b) The servlet is accessed for the first time i.e when the request arrives for that servlet.
+
+            - Once the class is loaded, the container creates single instance of the servlet using the no-argument constructor.
+            
+            - At this point, the servlet object is ready for initialization.
+
+        (2) Initialization:
+
+            - The container calls the init(ServletConfig config) method to initialize the servlet.
+
+            - This is a one-time activity and is invoked only once during the servlet's lifecycle.
+
+            - The ServletConfig object provides the servlet with initialization parameters and a reference to the ServletContext.
+
+            - The servlet container may throw a ServletException if init() fails, which prevents the servlet from being available.
+
+            - After init() completes, the servlet is ready to process client requests.
+
+        (3) Request Handling:
+
+            - After initialization, the servlet is ready to handle client requests.
+            
+            - The container calls the servlet's service(HttpServletRequest request, HttpServletResponse response) method 
+              for each client request.
+
+            Workflow:
+
+                - The container creates or retrieves a thread to handle the request.
+            
+                - The container creates and provides HttpServletRequest and HttpServletResponse objects to the servlet.
+                
+                - The servlet processes the request and generates a response.
+            
+                - Once the response is sent to the client, the thread is returned to the pool.
+
+        (4) Destruction:
+
+            - When the container decides to remove the servlet (e.g., during application shutdown or servlet redeployment), 
+              it calls the destroy() method.
+
+            - This is a one-time activity where the servlet releases resources like database connections, file handles, etc.
+            
+            - After the destroy() method is called, the servlet instance is eligible for garbage collection.
+             
+________________________________________________________________________________________________________________________
+
+*   What is Servlet Container ?
+
+>>  A Servlet Container is a component of a web server that manages the lifecycle of servlets, including loading, 
+    initializing, executing, and destroying them. 
+    
+    It processes incoming HTTP requests, invokes the appropriate servlet to handle them, and generates HTTP responses. 
+    
+    Example:
+
+        - Apache Tomcat
+        - Jetty
+        - GlassFish
+        
+________________________________________________________________________________________________________________________
+
+*   What are various ways of creating Servlet ?
+
+>>  In Java, there are three primary ways to create a servlet class. 
+
+    Each method provides a different approach, depending on the complexity of the application and the control you need 
+    over the servlet lifecycle. 
+    
+    (1) Extending the HttpServlet abstract Class:
+
+        - This is the most common approach which provides a high-level abstraction for HTTP-specific operations.
+
+        - This HttpServlet Class extends GenericServlet Abstract class.
+        
+        - The servlet class inherits from the HttpServlet class, which is part of the javax.servlet.http package.
+
+        - Override specific methods like doGet, doPost, etc., depending on the HTTP request type.
+
+        Example:
+
+            ```
+                import java.io.IOException;
+                import javax.servlet.http.HttpServlet;
+                import javax.servlet.http.HttpServletRequest;
+                import javax.servlet.http.HttpServletResponse;
+
+                public class MyHttpServlet extends HttpServlet {
+                    
+                    @Override
+                    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+                        
+                        response.getWriter().write("This method handles GET request");
+                    }
+
+                    @Override
+                    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+                        
+                        response.getWriter().write("This method handles POST request");
+                    }
+                }
+            ```
+
+    (2) Implementing the Servlet Interface:
+
+        - This method provides the most control over the servlet lifecycle.
+        
+        - The class must implement all five methods of the Servlet interface. Requires more boilerplate code than 
+          extending HttpServlet:
+
+            (a) init()
+            
+            (b) service()
+            
+            (c) destroy()
+            
+            (d) getServletConfig()
+            
+            (e) getServletInfo()
+    
+        Example:
+
+            ```
+                import java.io.IOException;
+                import javax.servlet.Servlet;
+                import javax.servlet.ServletConfig;
+                import javax.servlet.ServletException;
+                import javax.servlet.ServletRequest;
+                import javax.servlet.ServletResponse;
+
+                public class MyServlet implements Servlet {
+                    
+                    private ServletConfig config;
+
+                    @Override
+                    public void init(ServletConfig config) throws ServletException {
+                        this.config = config;
+                    }
+
+                    @Override
+                    public void service(ServletRequest request, ServletResponse response) throws IOException {
+                        response.getWriter().write("Hello from Servlet interface");
+                    }
+
+                    @Override
+                    public void destroy() {
+                        // Cleanup code
+                    }
+
+                    @Override
+                    public ServletConfig getServletConfig() {
+                        return this.config;
+                    }
+
+                    @Override
+                    public String getServletInfo() {
+                        return "MyServlet";
+                    }
+                }
+            ```
+    (3) Extending the GenericServlet abstract class:
+
+        - It provides an abstraction that is more general than HttpServlet, making it suitable for protocols other than HTTP.
+
+        - The GenericServlet class is part of the javax.servlet package and implements the Servlet interface.
+        
+        - The service() method must be overridden to handle requests.
+
+        Example:
+
+            ```
+                import java.io.IOException;
+                import javax.servlet.GenericServlet;
+                import javax.servlet.ServletRequest;
+                import javax.servlet.ServletResponse;
+
+                public class MyGenericServlet extends GenericServlet {
+                    
+                    @Override
+                    public void service(ServletRequest request, ServletResponse response) throws IOException {
+                        
+                        response.getWriter().write("Hello from GenericServlet");
+                    }
+                }
+
+            ```
+________________________________________________________________________________________________________________________
+
+*   From which Servlet version the annotations are available ?
+
+>>  Annotations for servlets, filters, and listeners were introduced in Servlet 3.0, which is part of the Java EE 6 platform.
+
+    If you're using a container based on an older version of the Servlet API (e.g., 2.5), you'll need to declare listeners, 
+    filters, and servlets in the web.xml file instead.
+
+    Key Annotations Introduced in Servlet 3.0:
+
+        (1) @WebServlet: For declaring servlets.
+
+        (2) @WebFilter: For declaring filters.
+
+        (3) @WebListener: For declaring listeners.
+
+        (4) @MultipartConfig: For handling file uploads in servlets.
+
+    Advantages:
+
+        - Simplifies configuration by eliminating the need to declare these components in the web.xml file.
+        
+        - Makes code more readable and self-contained, as metadata about the servlet, filter, or listener is located 
+          directly within the class.
+
+________________________________________________________________________________________________________________________
+
+
 *   What are various folders under WAR root package that is inaccessible directly through URL ?
 
 >>  (1) WEB-INF Directory:
@@ -108,31 +341,5 @@ ________________________________________________________________________________
 
         - Public files like css, js, images etc should be kept inside WEB-INF, META-INF or any restricted directory else 
           browser wouldn't be able to fetch them.  
-
-________________________________________________________________________________________________________________________
-
-*   From which Servlet version the annotations are available ?
-
->>  Annotations for servlets, filters, and listeners were introduced in Servlet 3.0, which is part of the Java EE 6 platform.
-
-    If you're using a container based on an older version of the Servlet API (e.g., 2.5), you'll need to declare listeners, 
-    filters, and servlets in the web.xml file instead.
-
-    Key Annotations Introduced in Servlet 3.0:
-
-        (1) @WebServlet: For declaring servlets.
-
-        (2) @WebFilter: For declaring filters.
-
-        (3) @WebListener: For declaring listeners.
-
-        (4) @MultipartConfig: For handling file uploads in servlets.
-
-    Advantages:
-
-        - Simplifies configuration by eliminating the need to declare these components in the web.xml file.
-        
-        - Makes code more readable and self-contained, as metadata about the servlet, filter, or listener is located 
-          directly within the class.
 
 ________________________________________________________________________________________________________________________

@@ -1,0 +1,158 @@
+*   What is Servlet Listeners ?
+
+>>  Servlet listeners in Java are special interfaces provided by the Java Servlet API that allow developers to listen 
+    for specific events and react to them. 
+    
+    These events are triggered by changes in the lifecycle of the web application, such as when a session is created, 
+    a request is received, or the application context is initialized. 
+    
+________________________________________________________________________________________________________________________
+
+*   What are various Servlet Listeners ?
+
+>>  Here’s a brief overview of the servlet listeners:
+
+    (1) ServletContextListener:
+
+        - Listens for lifecycle events of the ServletContext (application-wide events).
+        
+        Key Methods:
+        
+            (a) contextInitialized(ServletContextEvent sce): 
+            
+                - Triggered when the web application is initialized.
+        
+            (b) contextDestroyed(ServletContextEvent sce): 
+            
+                - Triggered when the web application is shut down.
+        
+        Use Cases:
+            
+            - Initialize application-wide resources (e.g., database connections, configuration files).
+            - Clean up resources when the application is stopped.
+        
+    (2) HttpSessionListener:
+
+        - Monitors lifecycle events of HTTP sessions.
+
+        Key Methods:
+            
+            (a) sessionCreated(HttpSessionEvent se): 
+            
+                - Triggered when a new session is created.
+            
+            (b) sessionDestroyed(HttpSessionEvent se): 
+            
+                - Triggered when a session is invalidated or times out.
+        
+        Use Cases:
+            
+            - Track active users.
+            - Log session creation and destruction events.
+            - Manage session-specific resources.
+
+    (3) HttpSessionAttributeListener:
+
+        - Monitors changes to attributes in an HTTP session.
+        
+        Key Methods:
+            
+            (a) attributeAdded(HttpSessionBindingEvent event): 
+            
+                - Triggered when an attribute is added to a session.
+
+            (b) attributeRemoved(HttpSessionBindingEvent event): 
+            
+                - Triggered when an attribute is removed from a session.
+        
+            (c) attributeReplaced(HttpSessionBindingEvent event): 
+            
+                - Triggered when an attribute is replaced in a session.
+
+        Use Cases:
+            
+            - Implement custom logging for session attribute changes.
+            - Manage dependent resources based on session attribute modifications.
+        
+    (4) ServletRequestListener:
+
+        - Monitors lifecycle events of servlet requests.
+        
+        Key Methods:
+
+            (a) requestInitialized(ServletRequestEvent sre): 
+            
+                - Triggered when a request is initialized.
+            
+            (b) requestDestroyed(ServletRequestEvent sre): 
+            
+                - Triggered when a request is completed.
+        
+        Use Cases:
+            
+            - Log incoming requests.
+            - Perform cleanup tasks for request-specific resources.
+        
+    (5) ServletRequestAttributeListener:
+
+        - Monitors changes to attributes in a servlet request.
+
+        Key Methods:
+
+            (a) attributeAdded(ServletRequestAttributeEvent srae): 
+                
+                - Triggered when an attribute is added to a request.
+            
+            (b) attributeRemoved(ServletRequestAttributeEvent srae): 
+            
+                - Triggered when an attribute is removed from a request.
+            
+            (c) attributeReplaced(ServletRequestAttributeEvent srae): 
+            
+                - Triggered when an attribute is replaced in a request.
+        
+        Use Cases:
+            
+            - Log or validate changes to request attributes.
+            - Manage temporary data during request processing.
+
+    (6) HttpSessionBindingListener:
+
+        - Monitors an object’s binding to and unbinding from an HTTP session.
+        - Implemented By: Objects themselves (not a separate listener interface).
+
+        Key Methods:
+
+            (a) valueBound(HttpSessionBindingEvent event): 
+            
+                - Triggered when the object is added to a session.
+
+            (b) valueUnbound(HttpSessionBindingEvent event): 
+            
+                - Triggered when the object is removed from a session.
+        
+        Use Cases:
+            
+            - Track objects tied to a session.
+            - Release resources when the object is removed from a session.
+
+    (7) HttpSessionActivationListener:
+
+        - Monitors an object’s migration across JVMs during session passivation and activation.
+        - Implemented By: Objects themselves.
+
+        Key Methods:
+        
+            (a) sessionWillPassivate(HttpSessionEvent se): 
+            
+                - Triggered before the session is serialized (passivation).
+            
+            (b) sessionDidActivate(HttpSessionEvent se): 
+            
+                - Triggered after the session is deserialized (activation).
+        
+        Use Cases:
+            
+            - Manage resources for distributed session handling.
+
+________________________________________________________________________________________________________________________

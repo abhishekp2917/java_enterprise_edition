@@ -14,7 +14,7 @@ public class HomeServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         ServletConfig servletConfig = this.getServletConfig();
         ServletContext servletContext = this.getServletContext();
-        RequestDispatcher requestDispatcher = servletContext.getRequestDispatcher("/WEB-INF/views/Home.jsp");
+        RequestDispatcher requestDispatcher = servletContext.getRequestDispatcher("/WEB-INF/views/home.jsp");
         String welcomeMessage = servletConfig.getInitParameter("welcomeMessage");
         request.setAttribute("welcomeMessage", welcomeMessage);
         requestDispatcher.forward(request, response);

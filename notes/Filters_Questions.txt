@@ -1,0 +1,121 @@
+*   What are Servlet Filters ?
+
+>>  Servlet Filters are Java objects that perform filtering tasks on either the request to a resource (such as a servlet, 
+    JSP, or static content) or the response from a resource, before passing the request/response to the next entity in 
+    the chain or the resource itself. 
+    
+    Filters are typically used to handle tasks that are common across multiple servlets, such as logging, authentication, 
+    input validation etc.
+
+    Multiple filters can be chained together to form a filter chain where each filter can either pass the request/response 
+    to the next filter or handle the request/response itself.
+
+    How it works:
+
+        - Filters are defined and configured in the web.xml file or through annotations (in modern servlet containers). 
+        
+        - When a request is made to a servlet, the container passes the request through the filter chain before reaching 
+          the servlet, and similarly, the response passes through the filter chain before being sent to the client.
+
+        - To create a filter, you need to implement the javax.servlet.Filter interface, which defines three main methods:
+
+            (1) init(FilterConfig filterConfig): 
+            
+                - Initializes the filter. The FilterConfig object provides access to initialization parameters and the ServletContext.
+
+            (2) doFilter(ServletRequest request, ServletResponse response, FilterChain chain): 
+            
+                - This is the core method where the filter processes the request/response. 
+                
+                - You can inspect and modify the request, inspect and modify the response, pass the request and response 
+                  to the next filter in the chain using chain.doFilter(request, response).
+
+            (3) destroy(): 
+            
+                - Cleans up any resources used by the filter when the filter is being destroyed (usually when the server 
+                  shuts down or the filter is no longer needed).
+
+    Example:
+
+        - Here’s a basic example of a Logging Filter that logs the request URL and the response time:
+
+        ```
+            import javax.servlet.*;
+            import javax.servlet.annotation.WebFilter;
+            import java.io.IOException;
+
+            public class LoggingFilter implements Filter {
+                
+                @Override
+                public void init(FilterConfig filterConfig) throws ServletException {
+                    // Initialize any necessary resources
+                }
+
+                @Override
+                public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+                    long startTime = System.currentTimeMillis();
+                    
+                    // Log request details
+                    System.out.println("Request received: " + request.getRemoteAddr());
+                    
+                    // Continue the request-response chain
+                    chain.doFilter(request, response);
+                    
+                    long endTime = System.currentTimeMillis();
+                    
+                    // Log response time
+                    System.out.println("Response time: " + (endTime - startTime) + " ms");
+                }
+
+                @Override
+                public void destroy() {
+                    // Clean up resources if necessary
+                }
+            }
+        ```
+
+    web.xml Configuration:
+
+        - The order of filters are decided by the order in which filter-mapping is being configured.
+
+        - In below example, since LoggingFilter is configured before AuthenticationFilter for url pattern '/*', LoggingFilter
+          will be executed before AuthenticationFilter.
+
+        ```
+            <filter>
+                <filter-name>LoggingFilter</filter-name>
+                <filter-class>com.example.filters.LoggingFilter</filter-class>
+            </filter>
+
+            <filter>
+                <filter-name>AuthenticationFilter</filter-name>
+                <filter-class>com.example.filters.AuthenticationFilter</filter-class>
+            </filter>
+
+            <filter-mapping>
+                <filter-name>LoggingFilter</filter-name>
+                <url-pattern>/*</url-pattern>
+            </filter-mapping>
+
+            <filter-mapping>
+                <filter-name>AuthenticationFilter</filter-name>
+                <url-pattern>/*</url-pattern>
+            </filter-mapping>
+        ```
+
+
+    Use Cases:
+        
+        (1) Logging: 
+        
+            - Filters can be used to log details of incoming requests and outgoing responses.
+
+        (2) Authentication and Authorization: 
+        
+            - Filters can inspect requests to check for authentication headers and verify user permissions.
+
+        (3) Input Validation: 
+        
+            - Filters can validate data in incoming requests before passing them to the servlet.
+
+________________________________________________________________________________________________________________________

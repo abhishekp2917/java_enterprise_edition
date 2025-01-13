@@ -1,3 +1,4 @@
+<%@ page errorPage="/WEB-INF/views/error.jsp" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,9 +10,14 @@
 <body>
     <div class="login-container">
         <h1>Login</h1>
-        <c:if test="${not empty failedLoginMessage}">
+        <%
+            String message = (String) request.getAttribute("failedLoginMessage");
+            if (message != null) {
+        %>
             <div class="error-message">${failedLoginMessage}</div>
-        </c:if>
+        <%
+            }
+        %>
         <form action="login" method="POST">
             <div class="form-group">
                 <label for="username">Username</label>

@@ -1,3 +1,89 @@
+*   What is HTTPSession ?
+
+>>  HttpSession is an interface in Java's javax.servlet.http package that provides a mechanism to store data between 
+    multiple requests from the same user.
+    
+    It is used to maintain a user session across multiple HTTP requests. 
+    
+    Since HTTP is stateless, HttpSession helps store information about the user (like login status, shopping cart items, etc.) 
+    between different requests made by the same user.
+
+    Key Features:
+
+        (1) Session Management: 
+        
+            - It allows you to store user-specific data across multiple requests, making it possible to track users’ 
+              activities during their interaction with the web application.
+
+        (2) Unique to Each User: 
+        
+            - Each user has a unique session identified by a session ID. 
+            
+            - This is typically stored as a cookie (usually JSESSIONID) on the client side or passed via the URL.
+
+        (3) Automatic Creation: 
+        
+            - A session is automatically created for a user when they first make a request to the server (if not already created).
+
+        (4) Persistence: 
+        
+            - Session data is stored on the server, and it can persist as long as the session is active, usually until 
+              the user logs out or the session expires.
+
+    Example:
+
+        - In the below example, the servlet checks the username and password provided by the user. 
+        
+        - If the login is successful, it creates a session (getSession()), stores the username in the session, and
+          redirects the user to a welcome page. 
+          
+        - If the login is unsuccessful, the user is redirected back to the login page.
+
+        ```
+            import javax.servlet.*;
+            import javax.servlet.http.*;
+            import java.io.*;
+
+            public class LoginServlet extends HttpServlet {
+                
+                @Override
+                protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+                    
+                    String username = request.getParameter("username");
+                    String password = request.getParameter("password");
+
+                    // Dummy login check (Replace with actual authentication logic)
+                    if ("admin".equals(username) && "password".equals(password)) {
+                        
+                        // Create session and store username
+                        HttpSession session = request.getSession();
+                        session.setAttribute("username", username);
+                        
+                        // Redirect to the welcome page
+                        response.sendRedirect("welcome.jsp");
+
+                    } else {
+
+                        // Invalid login, redirect to login page
+                        response.sendRedirect("login.jsp");
+                    }
+                }
+            }
+        ```
+
+    How it Works:
+        
+        - When a user makes a request, the server checks if the request contains a valid session ID (stored as a cookie).
+        
+        - If a session ID is found, the server retrieves the associated session; otherwise, it creates a new session.
+        
+        - Data can be added to the session using setAttribute(), and it will be available across multiple requests for 
+          the same user.
+        
+        - Once the session is no longer needed or has expired, it can be invalidated using invalidate().
+
+________________________________________________________________________________________________________________________
+
 *   Why accessing HttpSession object can only be possible through HttpServletRequest and not normal ServletRequest ?
 
 >>  Session management is an HTTP-specific feature, and HttpSession is an abstraction for managing user sessions in an 

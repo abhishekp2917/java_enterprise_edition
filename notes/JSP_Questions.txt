@@ -68,26 +68,40 @@
                 <c:if test="${someCondition}">Some content</c:if>
             ```
 
-Custom Tags:
+    (6) Custom Tags:
 
-Custom tags allow developers to define their own tags for use in JSP pages, usually through a tag library. These can encapsulate complex behavior and provide a higher level of abstraction.
-They are typically used with tag libraries like the JavaServer Pages Standard Tag Library (JSTL).
-Action Tags:
+        - Custom tags allow developers to define their own tags for use in JSP pages, usually through a tag library. 
+        
+        - These can encapsulate complex behavior and provide a higher level of abstraction.
+        
+        - They are typically used with tag libraries like the JavaServer Pages Standard Tag Library (JSTL).
 
-Action tags are used to invoke JavaBeans, include other JSP pages, or forward requests to another resource.
-Common actions include:
-<jsp:useBean>: Instantiates and initializes a JavaBean.
-<jsp:include>: Includes content from another resource.
-<jsp:forward>: Forwards the request to another resource.
-JavaBeans:
+    (7) Action Tags:
 
-JavaBeans are reusable components used to encapsulate data and provide getter and setter methods. These can be accessed directly within JSP using <jsp:useBean> and other actions.
-Error Handling:
+        - Action tags are used to invoke JavaBeans, include other JSP pages, or forward requests to another resource.
+        
+        - Common actions include:
 
-JSP supports error handling using the errorPage attribute in the page directive to redirect to an error page when an exception occurs.
-Example: <%@ page errorPage="error.jsp" %>
-These components help to separate the logic (Java code) from the presentation (HTML) and create more manageable and maintainable web pages.
+            <jsp:useBean>: Instantiates and initializes a JavaBean.
+            <jsp:include>: Includes content from another resource.
+            <jsp:forward>: Forwards the request to another resource.
 
+    (8) JavaBeans:
+
+        - JavaBeans are reusable components used to encapsulate data and provide getter and setter methods. 
+        
+        - These can be accessed directly within JSP using <jsp:useBean> and other actions.
+    
+    (9) Error Handling:
+
+        - JSP supports error handling using the errorPage attribute in the page directive to redirect to an error page 
+          when an exception occurs.
+        
+        Example: 
+        
+            ```
+                <%@ page errorPage="error.jsp" %>
+            ```
 ________________________________________________________________________________________________________________________
 
 *   What are various java packages that are imported by-default by JSP ?
@@ -161,5 +175,53 @@ ________________________________________________________________________________
         - Variable name: exception  
         - Available only in error pages (when isErrorPage="true" is set in the JSP).
         - Represents the exception that caused the error.
+
+________________________________________________________________________________________________________________________
+
+*   What is the difference between '<%@ page errorPage="error.jsp" %>' and '<%@ page isErrorPage="true" %>' ?
+
+>>  (1) '<%@ page errorPage="error.jsp" %>':
+
+        - Specifies the JSP page to which the request will be forwarded when an exception occurs in the current JSP.
+
+        - When an unhandled exception occurs in the current JSP, it is forwarded to the page specified in the 
+            errorPage attribute.
+
+        - The error page must be configured to handle errors using <%@ page isErrorPage="true" %>.
+
+        Example:
+
+            ```
+                <%@ page errorPage="error.jsp" %>
+                <%
+                    // This will cause an ArithmeticException
+                    int result = 10 / 0; 
+                %>
+            ```
+
+            - If the division by zero error occurs, the request will be forwarded to error.jsp.
+
+    (2) '<%@ page isErrorPage="true" %>':
+
+        - Indicates that the current JSP is designed to handle errors (i.e., it is an error page).
+        
+        - Enables the use of the implicit exception object, which contains details about the exception.
+        
+        - Without isErrorPage="true", the exception object is not available in the JSP.
+        
+        Example:
+
+            ```
+                <%@ page isErrorPage="true" %>
+                <html>
+                <body>
+                    <h1>Error Details</h1>
+                    <p>Exception: <%= exception %></p>
+                    <p>Message: <%= exception.getMessage() %></p>
+                </body>
+                </html>
+            ```
+
+        - The exception object is implicitly available and contains details about the error forwarded to this page.
 
 ________________________________________________________________________________________________________________________

@@ -44,3 +44,21 @@ p {
     color: #333;
     margin-top: 20px;
 }
+
+.calculation-panel {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    width: fit-content;
+}
+.calculation-panel h3 {
+    margin-bottom: 10px;
+}
+.calculation-panel form {
+    display: flex;
+    flex-direction: column;
+}
+.calculation-panel label, .division-panel input {
+    margin-bottom: 10px;
+}

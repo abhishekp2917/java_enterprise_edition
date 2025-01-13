@@ -5,14 +5,19 @@
                              http://java.sun.com/xml/ns/javaee/web-app_3_1.xsd"
          version="3.0">
 
+    <!-- ======================================== Servlet Configuration ===========================================  -->
+
     <servlet>
-        <servlet-name>UserServlet</servlet-name>
-        <servlet-class>com.example.controllers.UserServlet</servlet-class>
+        <servlet-name>SquareServlet</servlet-name>
+        <servlet-class>com.example.controllers.SquareServlet</servlet-class>
     </servlet>
 
     <servlet>
         <servlet-name>HomeServlet</servlet-name>
         <servlet-class>com.example.controllers.HomeServlet</servlet-class>
+
+        <!-- ============= Servlet Config Configuration =============  -->
+
         <init-param>
             <param-name>welcomeMessage</param-name>
             <param-value>Welcome to Servlet Demo!</param-value>
@@ -22,6 +27,9 @@
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
         <servlet-class>com.example.controllers.LoginServlet</servlet-class>
+
+        <!-- ============= Servlet Config Configuration =============  -->
+
         <init-param>
             <param-name>failedLoginMessage</param-name>
             <param-value>Invalid username or password</param-value>
@@ -33,22 +41,28 @@
     </servlet>
 
     <servlet>
+        <servlet-name>CalculateServlet</servlet-name>
+        <servlet-class>com.example.controllers.CalculateServlet</servlet-class>
+    </servlet>
+
+
+    <servlet>
         <servlet-name>LogoutServlet</servlet-name>
         <servlet-class>com.example.controllers.LogoutServlet</servlet-class>
+
+        <!-- ============= Servlet Config Configuration =============  -->
+
         <init-param>
             <param-name>redirectURL</param-name>
             <param-value>/</param-value>
         </init-param>
     </servlet>
 
+    <!-- ==================================== Servlet Mapping Configuration =======================================  -->
+
     <servlet-mapping>
         <servlet-name>HomeServlet</servlet-name>
         <url-pattern>/home</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>UserServlet</servlet-name>
-        <url-pattern>/user</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
@@ -57,14 +71,20 @@
     </servlet-mapping>
 
     <servlet-mapping>
+        <servlet-name>CalculateServlet</servlet-name>
+        <url-pattern>/calculate</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
         <servlet-name>LogoutServlet</servlet-name>
         <url-pattern>/logout</url-pattern>
     </servlet-mapping>
 
+    <!-- ==================================== Servlet Context Configuration =======================================  -->
 
     <context-param>
         <param-name>applicationPropertiesFilePath</param-name>
-        <param-value>/WEB-INF/config.xml</param-value>
+        <param-value>/WEB-INF/application.properties</param-value>
     </context-param>
 
     <context-param>
@@ -77,7 +97,7 @@
         <param-value>admin@123</param-value>
     </context-param>
 
-    <!-- ============================================ Filters Configuration ============================================  -->
+    <!-- ========================================== Filters Configuration =========================================  -->
 
     <filter>
         <filter-name>LoggingFilter</filter-name>
@@ -88,6 +108,8 @@
         <filter-name>AuthenticationFilter</filter-name>
         <filter-class>com.example.filters.AuthenticationFilter</filter-class>
     </filter>
+
+    <!-- ==================================== Filters Mapping Configuration =======================================  -->
 
     <!--
         The order of filter will be based on the order in which <filter-mapping/> is defined for each pattern
@@ -108,13 +130,79 @@
         <url-pattern>/user</url-pattern>
     </filter-mapping>
 
-    <!--    <listener>-->
-<!--        <listener-class>com.example.listener.MyListener</listener-class>-->
-<!--    </listener>-->
+    <!-- ======================================== Listeners Configuration =========================================  -->
+
+    <!-- ====================== Servlet Context Listeners =========================  -->
+
+    <listener>
+        <listener-class>com.example.listeners.ServletContextListenerDemo</listener-class>
+    </listener>
+
+    <!-- ====================== Servlet Request Listeners =========================  -->
+
+    <listener>
+        <listener-class>com.example.listeners.ServletRequestListenerDemo</listener-class>
+    </listener>
+
+    <listener>
+        <listener-class>com.example.listeners.ServletRequestAttributeListenerDemo</listener-class>
+    </listener>
+
+    <!-- ======================== Http Session Listeners =========================  -->
+
+    <listener>
+        <listener-class>com.example.listeners.HttpSessionListenerDemo</listener-class>
+    </listener>
+
+    <listener>
+        <listener-class>com.example.listeners.HttpSessionAttributeListenerDemo</listener-class>
+    </listener>
+
+    <listener>
+        <listener-class>com.example.listeners.HttpSessionActivationListenerDemo</listener-class>
+    </listener>
+
+    <listener>
+        <listener-class>com.example.listeners.HttpSessionBindingListenerDemo</listener-class>
+    </listener>
+
+
 
 <!--    <session-config>-->
 <!--        <session-timeout>30</session-timeout>-->
 <!--    </session-config>-->
+
+    <!-- =================================== Error Page Mapping Configuration =====================================  -->
+
+    <!--
+        This mapping specifies that whenever there is a 404, 401 error or any Exception is raised by the server,
+        the JSP page mapping mentioned below will be used to handle such error or exception
+    -->
+
+    <!--  Display this page in case of 404 error  -->
+
+    <error-page>
+        <error-code>404</error-code>
+        <location>/WEB-INF/views/error404.jsp</location>
+    </error-page>
+
+    <!--  Display this page in case of 401 error  -->
+
+    <error-page>
+        <error-code>401</error-code>
+        <location>/WEB-INF/views/error.jsp</location>
+    </error-page>
+
+    <!--  Display this page in case any Exception has been raised  -->
+
+    <error-page>
+        <exception-type>java.lang.Exception</exception-type>
+        <location>/WEB-INF/views/error.jsp</location>
+    </error-page>
+
+    <!-- ============================================ Welcome File ================================================  -->
+
+    <!-- Display this file in response to the root path : '/'   -->
 
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
