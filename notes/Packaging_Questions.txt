@@ -1,0 +1,95 @@
+*   What should be the folder structure of WAR package ?
+
+>>  A WAR (Web Application Archive) package follows a standard folder structure to organize the resources, classes, 
+    libraries, and configuration files required for a Java web application to function. 
+    
+    This structure ensures that the servlet container can locate and use these resources effectively.
+
+        / (Root of the WAR file)
+        ├── WEB-INF/
+        │   ├── web.xml                         (Deployment descriptor, optional for servlet 3.0+ if annotations are used)
+        │   ├── classes/                        (Compiled Java classes, including servlets and utility classes)
+        │   │   ├── com/
+        │   │   │   └── example/
+        │   │   │       ├── controllers
+        |   |   |       |       └── MyServlet.class
+        |   |   |       |
+        │   │   │       └── filters
+        │   ├── lib/                            (Third-party JAR files)
+        │   │   ├── mysql-connector.jar
+        │   │   └── log4j.jar
+        │   ├── application.properties          (Custom properties file, if required)
+        ├── static/                             (Static resources like images, CSS, JS files)
+        │   ├── css/
+        │   │   └── style.css
+        │   ├── js/
+        │   │   └── script.js
+        │   └── images/
+        │       └── logo.png
+        ├── META-INF/                           (Metadata, typically contains the MANIFEST.MF file)
+        │   └── MANIFEST.MF
+        ├── index.html                          (HTML files publically accessible to users)
+        └── login.jsp                           (JSP files publically accessible to users)
+
+    Below is the basic mandatory WAR structure:
+
+        - As per this structure, the mandatory files required to create a web application using servlets are:
+
+            (1) compiled Java classes at the path /WEB-INF/classes.
+
+            (2) web.xml file at the path /WEB-INF
+
+            (3) jar files at the path /WEB-INF/lib
+
+        / (Root of the WAR file)
+        ├── WEB-INF/
+            ├── web.xml                         (Optional in Servlet 3.0+ if annotations are used)
+            ├── classes/                        (Contains compiled Java classes like servlets)
+            │   
+            └── lib/                            (Contains required JAR files)
+
+________________________________________________________________________________________________________________________
+
+*   What is the most common folder structure followed at the time of development ?
+
+>>  For a Spring MVC project using JSP, the typical development folder structure follows the WAR (Web Application Archive) 
+    format because JSP requires a servlet container like Tomcat, WildFly, or JBoss. 
+    
+    Below is the recommended Maven-based folder structure for such a project:
+
+    my-mvc-project/
+    │── src/
+    │   ├── main/
+    │   │   ├── java/com/example/myproject/  
+    │   │   │   ├── config/         # Spring Configurations (DispatcherServlet, ViewResolver, etc.)
+    │   │   │   ├── controller/     # Controllers (Handle HTTP requests)
+    │   │   │   ├── service/        # Business Logic Layer
+    │   │   │   ├── repository/     # Data Access Layer (JPA, JDBC, etc.)
+    │   │   │   ├── model/          # Entity & DTO Classes
+    │   │   │   ├── exception/      # Custom Exception Handling
+    │   │   │   ├── util/           # Utility Classes
+    │   │   │   ├── dto/            # Data Transfer Objects (DTOs)
+    │   │   ├── resources/   
+    │   │   │   ├── messages/       # i18n Messages (if applicable)
+    │   │   │   ├── application.properties  # Spring Configurations
+    │   │   │   ├── log4j2.xml      # Logging Configuration (if using Log4j)
+    │   │   ├── webapp/             # Web Application Directory
+    │   │   │   ├── WEB-INF/        # JSPs & Configuration Files (secured from direct access)
+    │   │   │   │   ├── views/      # JSP Pages (JSP UI)
+    │   │   │   │   │   ├── index.jsp
+    │   │   │   │   │   ├── home.jsp
+    │   │   │   │   │   ├── error.jsp
+    │   │   │   │   ├── jsp/         # Additional JSP files (optional subfolder)
+    │   │   │   │   ├── web.xml      # Web Deployment Descriptor (if needed)
+    │   │   │   ├── static/          # Static Resources (CSS, JS, images)
+    │   │   │   │   ├── css/
+    │   │   │   │   ├── js/
+    │   │   │   │   ├── images/
+    │   ├── test/                    # Unit & Integration Tests
+    │── .gitignore                    # Git Ignore Rules
+    │── pom.xml                        # Maven Build File
+    │── Dockerfile                     # Dockerfile (if containerized)
+    │── README.md                      # Project Documentation
+
+
+________________________________________________________________________________________________________________________
